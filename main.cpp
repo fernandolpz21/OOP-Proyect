@@ -3,6 +3,8 @@
 
 
 #include <iostream>
+#include <fstream> 
+#include <string>
 #include "Video.h"
 #include "Movie.h"
 #include "Serie.h"
@@ -13,15 +15,74 @@ using namespace std;
 void welcome(){
     cout << "Welcome!" << endl;
 }
-void loadData(){
+void loadDataTxt(){
+    string text;
+    ifstream catalog("catalog.txt");
+    if(catalog.is_open()){
+        int counter = 1;
+        while(getline(catalog,text)){
+            cout << counter << endl;
+            counter ++;
+        }
+        catalog.close();
+    }
+    else{
+        throw "Can't open data file";
+    }
     
 }
-void initSerie(){
-    Serie DemonSlayer("12345", "Kimetsu no Yaiba", 9.966, "Fantasy", 5, 26);
+void loadData(vector<Video*> _catalog){
+    int cont = 0;
+    for(Video* vid: _catalog){
+        cont ++;
+        cout << "Catalog Number: " << cont << endl;
+        cout << "*****" << vid -> getName() << "*****" << endl;
+        cout << "ID: " << vid -> getId() << endl;
+        cout << "Genre: " << vid -> getGenre() << endl;
+        cout << "Rate: " << vid -> getRate() << endl;
+        cout << "==========================================" << endl;
+    }
+}
+
+vector<Video*> initSeries(){ //En caso de que no quieras abrir archivos
+
+    ///No lo estás inicializando globalmente
+    try{          
+        vector <Episode> demonEpisodes;
+        Episode ds1{"ds1", 1, 23.0};
+        demonEpisodes.push_back(ds1);
+        Serie DemonSlayer("12345", "Kimetsu no Yaiba", "Fantasy/Action", 4.5, demonEpisodes); 
+
+
+        vector <Episode> trollEpisodes;
+        Episode th1{"th1", 2, 22.4};
+        trollEpisodes.push_back(th1);
+        Serie TrollHunters("23456", "Troll Hunters", "Fantasy/Action", 5, trollEpisodes);
+
+        Movie PacificRim("12321", "Pacific Rim", "Sci-Fi", 2.11, 4.3);
+        Movie MurgenTrain("23421", "Demon Slayer: Murgen Train", "Fantasy/Action", 1.57, 4.9);
+
+        vector<Video*> catalog {&DemonSlayer, &TrollHunters, &PacificRim, &MurgenTrain};
+        //return catalog;
+        int cont = 0;
+        for(Video* vid: catalog){
+            cont ++;
+            cout << "*****" << vid -> getName() << "*****" << endl;
+            cout << "Position in catalog: " << cont << endl;
+            cout << "ID: " << vid -> getId() << endl;
+            cout << "Genre: " << vid -> getGenre() << endl;
+            cout << "Rate: " << vid -> getRate() << endl;
+            cout << "==========================================" << endl;
+        }
+    }
+    catch(const char* exception){
+        cout << exception << endl;
+    }
 }
 
 
 int main(){
+    system("cls");
     welcome();
     int op = 1;
     while(op != 0){
@@ -32,12 +93,12 @@ int main(){
         cout << "4) Show movies" << endl;
         cout << "5) Rate a video" << endl;
         cout << "0) Exit" << endl;
-        cout << "What option do you want? : " ;
+        cout << "Choose an option : " ;
         cin >> op;
         cout << endl;
 
         switch (op){
-            case 1: cout << "Elegiste la opción 1" << endl;
+            case 1:initSeries();
             break;
             case 2: cout << "Elegiste la opción 2" << endl;
             break;

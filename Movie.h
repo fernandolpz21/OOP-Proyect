@@ -6,9 +6,10 @@ class Movie: public Video{
     
     public:
         Movie();
-        Movie(std::string _id, std::string _name, float _length, std::string _genre, int _rate);
+        Movie(std::string _id, std::string _name,std::string _genre, float _length, float _rate);
 
         //Method
-        int getRate() override;
+        void setLength(float _length) override;
+        void setRate(float _rate) override;
 
 };

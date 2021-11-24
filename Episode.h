@@ -8,12 +8,16 @@ class Episode{
         float length;
     public:
         Episode();
-        Episode(std::string _title, int _season);
+        Episode(std::string _title, int _season, float _length);
 
+        //getters & setters
         std::string getTitle();
         int getSeason();
+        float getLength();
+        float getRate();
 
         void setTitle(std::string _title);
         void setSeason(int _season);
+        void setRate();
 
 };

@@ -9,8 +9,20 @@ class Serie: public Video{
 
     public:
         Serie();
-        Serie(std::string _id, std::string _name, float _length, std::string _genre, int _rate, int _numEpisodes);
+        Serie(std::string _id, std::string _name, std::string _genre, float _rate, std::vector<Episode> _episodes);
         
-        int getRate() override;
-        std::vector <Episode> episodes;//vector<tipo de dato> nombre del vector
+        //getters
+        int getNumEpisodes();
+
+        //Setters
+        void setNumEpisodes(std::vector<Episode> _episodes);
+
+        //Override setters
+        void setLength(float _length) override;
+        void setRate(float _rate) override;
+
+        std::vector <Episode> episodes;//vector <type> name
+
+        //Methods
+        void updateLength();
 };

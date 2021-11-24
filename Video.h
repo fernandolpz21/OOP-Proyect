@@ -1,4 +1,4 @@
-#pragma one
+#pragma once
 #include <string>
 
 //Abstract class
@@ -7,31 +7,33 @@ class Video{
     private:
         std::string id;
         std::string name;
-        float length;
         std::string genre;
         
     protected:
-        int rate;
+        float rate;
+        float length;
     public:
         //Constructors
-        Video(std::string _id, std::string _name, float _length, std::string _genre, int _rate);
+        Video(std::string _id, std::string _name, std::string _genre);
         Video();
 
         //getters
         std::string getId();
         std::string getName();
-        float getLength();
         std::string getGenre();
+        float getRate();
+        float getLength();
 
         //setters
         void setId(std::string _id);
         void setName(std::string _name);
-        void setLength(float _length);
         void setGenre(std::string _genre);
-        void setRate(int _rate);
-
+        
         //methods for the abstract class
-        int virtual getRate() = 0;
+
+        void virtual setLength(float _length) = 0;
+        void virtual setRate(float _rate);
+
 
         //Sobrecarga de operadores: comparar rate de peliculas
 
