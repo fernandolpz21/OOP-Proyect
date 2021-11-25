@@ -26,15 +26,21 @@ void Serie::setLength(float _length){
     Video::length = _length;
 }
 void Serie::setRate(float _rate){
-    //Promedio de length de episodios
+    Video::rate = _rate;
 }
 
 //Methods
-void Serie::updateLength(){
-    //Promedio de Rate de Episodios
+void Serie::updateLength(){ //setLength()
     float totalLenght = 0;
     for(Episode ep : this-> episodes){ //For an episode variable called "ep" in each member of the vector episodes
         totalLenght = totalLenght + ep.getLength();
     }
     setLength(totalLenght);
+}
+void Serie::updateRate(){
+    float totalRate = 0;
+    for(Episode ep : this-> episodes){ //For an episode variable called "ep" in each member of the vector episodes
+        totalRate = totalRate + ep.getRate();
+    }
+    setRate(totalRate);
 }

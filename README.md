@@ -25,3 +25,11 @@ About the class:
 Programación orientada a objetos TC1031
 Instituto Tecnológico de Monterrey 
 Campus Guadalajara
+
+
+
+
+
+Dudas:
+1) Override de set length en serie.cpp y .h --- no sé cómo hacer un override sin usar sobrecarga de funciones
+2) main.cpp 81 -- Porqué si funciona con el NOT??
