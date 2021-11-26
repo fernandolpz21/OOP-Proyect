@@ -28,7 +28,6 @@ Campus Guadalajara
 
 References:
 [R1] http://www.network-science.de/ascii/
-[R2] https://stackoverflow.com/questions/874134/find-out-if-string-ends-with-another-string-in-c
 
 [RA] switch condicional:
 switch(opción) //donde opción es la variable a comparar
@@ -77,4 +76,6 @@ https://www.geeksforgeeks.org/stdstringcompare-in-c/
 
 
 Dudas:
+1) El programa crashea al acceder a las series
+2) El nombre de kimetsu no siempre aparece
 

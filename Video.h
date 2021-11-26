@@ -35,9 +35,6 @@ class Video{
         void virtual setRate(float _rate);
 
 
-        //Sobrecarga de operadores: comparar rate de peliculas
-
-
-
-
+        //Overloading
+        bool operator == (std::string _videoType);
 };

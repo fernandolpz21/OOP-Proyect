@@ -9,6 +9,7 @@ References are stablished by comments as:
      [Rx] where x is a letter. Those references are for the reader to know how the code is working.
 */
 
+
 // *** Libreries *** 
 #include <iostream>
 #include <fstream> 
@@ -21,18 +22,14 @@ References are stablished by comments as:
 
 using namespace std;
 
+//*** Global variables *** 
+    vector<Video*> catalog;
+    vector<Serie*> series;
+
 // *** Functions ***
 void welcome(){
     //[R1]
     printf("""\t===================================================================\n\t888       888        888                                     888888\n\t888   o   888        888                                     888888\n \t888  d8b  888        888                                     888888\n \t888 d888b 888 .d88b. 888 .d8888b .d88b. 88888b d88b.  .d88b. 888888\n \t888d88888b888d8P  Y8b888d88P    d88  88b888  888  88bd8P  Y8b888888\n \t88888P Y8888888888888888888     888  888888  888  88888888888Y8PY8P\n \t8888P   Y8888Y8b.    888Y88b    Y88..88P888  888  888Y8b      "  " \n \t888P     Y888  Y8888 888  Y8888P  Y88P  888  888  888  Y8888 888888\n\t===================================================================\n""");
-}
-bool hasEnding (std::string const &fullString, std::string const &ending) { //Puede que ni la use
-    //[R2][RB]
-    if (fullString.length() >= ending.length()) {
-        return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
-    } else {
-        return false;
-    }
 }
 /*void loadDataTxt(){
     //I will try to do this later, it doesn't work for now
@@ -169,15 +166,14 @@ void sortByRate(vector<Video*> _catalog){
     }
 }
 vector<Video*> clasifyVideos(vector<Video*> _catalog, int _videoType){
-    vector<Video*> allSeries;//Quiero que sea un vector de series
+    vector<Video*> allSeries;
     vector<Video*> allMovies;
     int cont = 0;
     for(Video* vid: _catalog){ 
-        //Aquí puedes sobrecargar == para comparar ID's
-        if((vid -> getId().compare(3, 2, "45")) == 0){ //If the ID ends with "45" its a Serie
+        if(*vid == "serie"){ //If the ID ends with "45" its a Serie [overloaded operator]
             allSeries.push_back(vid);
         }
-        else if((vid -> getId().compare(3, 2, "21")) == 0){ //If the ID ends with "21" its a Movie
+        else if(*vid == "movie"){ //If the ID ends with "21" its a Movie
             allMovies.push_back(vid);
         }
     }
@@ -195,82 +191,40 @@ vector<Video*> clasifyVideos(vector<Video*> _catalog, int _videoType){
     }
     return _catalog;
 }
-void showEpisodes(vector<Video*> _allSeries){
-    /*
-    int cont = 0;
-    for(Video* vid: _series){ 
-        if((vid -> getId().compare(3, 2, "45")) == 0){ //If the ID ends with "45"
-            sortedCatalog.push_back(vid);
-
-            cout << *sortedCatalog[0].showEpisodes()<< endl;
-            cont ++;
-        }
-    }*/ //Para imprimir direcciones de video
+int showEpisodes(vector<Serie*> _series){
     int op = 1;
     while (op != 0){
         cout << endl;
         cout << "** SELECT A SERIE **" << endl;
         int cont = 1;
-        for(Video* vid: _allSeries){ 
+        for(Serie* vid: _series){ 
             cout << cont << ") " << vid->getName() << endl;
+            cont++;
         }
         cout << "0) Go back" << endl;
         cout << "Choose an option : " ;
         cin >> op;
         cout << endl;
-
-        switch(op){
-            case 1:{
-                cout << "Option 1" << endl;
-                //Necesito desreferenciar
-                /*
-                Video s = (*_allSeries)[1];
-                cout << s->showEpisodes() << endl;*/
+        
+        try{
+            if(op > 0 && op <= cont){
+                _series[op-1]->showEpisodes();
+                return op-1; //For the rateSeries() function
             }
-            break;
-            case 2: cout << "Option 2" << endl;
-            break;
-            case 3: cout << "Option 3" << endl;
-            break;
-            case 4: cout << "Option 4" << endl;
-            break;
-            case 0: cout << endl;
-            break;
-            default: 
-                cout << "The chosen option is not correct. Please try again" << endl;
-                cout << endl;
+            else if(op == 0){
+                continue;
+            }
+            else{
+                throw "Option not avaliable. Please try again";
+            }
         }
+        catch(const char* exception){
+            cout << exception << endl;
+        } 
     }
 }
 void showMovies(vector<Video*> _catalog){
     showVideos(clasifyVideos(_catalog, 2));
-}
-void rateVideo(vector<Video*> _catalog){ //Not ready yet
-    //Necesito poder entrar a la película
-    int op = 1;
-    while (op != 0){
-        cout << endl;
-        cout << "** RATE A VIDEO **" << endl;
-        cout << "1) Movie" << endl;
-        cout << "2) Serie Episode" << endl;
-        cout << "0) Go back" << endl;
-        cout << "Choose an option : " ;
-        cin >> op;
-        cout << endl;
-        switch(op){
-            case 1: 
-                cout << "Option 1" << endl;
-                //rateMovie();
-            break;
-            case 2: cout << "Option 2" << endl;
-            break;
-            case 0: cout << endl;
-            break;
-            default: 
-                cout << "The chosen option is not correct. Please try again" << endl;
-                cout << endl;
-        }
-    }
 }
 void rateMovie(vector<Video*> _allMovies){
     int op = 1;
@@ -287,22 +241,78 @@ void rateMovie(vector<Video*> _allMovies){
         cin >> op;
         cout << endl;
 
+        try{
+            if(op > 0 && op <= cont){
+                float newRate;
+                cout << "Set new rate: " ;
+                cin >> newRate;
+                _allMovies[op-1]->setRate(newRate);
+                cout << "Rate changed successfully " << endl;
+            }
+            else if(op == 0){
+                continue;
+            }
+            else{
+                throw "Option not avaliable. Please try again";
+            }
+        }
+        catch(const char* exception){
+            cout << exception << endl;
+        }
+    }
+}
+void rateSerie(vector<Serie*> _series){
+    showEpisodes(_series);
+    int serieNumber = showEpisodes(_series);
+    
+    int op = 1;
+    while (op != 0){
+        cout << endl;
+        cout << "** SELECT AN EPISODE **" << endl;
+        cout << "0) Go back" << endl;
+        cout << "Choose an option : " ;
+        cin >> op;
+        cout << endl;
+        int numEpisodes = _series[serieNumber] -> getNumEpisodes();
+        try{
+            if(op > 0 && op <= numEpisodes){
+                float newRate;
+                cout << "Set new rate: " ;
+                cin >> newRate;
+                _series[serieNumber]->episodes[op-1].setRate(newRate);
+                cout << "Rate changed successfully " << endl;
+            }
+            else if(op == 0){
+                continue;
+            }
+            else{
+                throw "Option not avaliable. Please try again";
+            }
+        }
+        catch(const char* exception){
+            cout << exception << endl;
+        }
+    }
+}
+void rateVideo(vector<Video*> _catalog){
+    int op = 1;
+    while (op != 0){
+        cout << endl;
+        cout << "** RATE A VIDEO **" << endl;
+        cout << "1) Movie" << endl;
+        cout << "2) Serie Episode" << endl;
+        cout << "0) Go back" << endl;
+        cout << "Choose an option : " ;
+        cin >> op;
+        cout << endl;
         switch(op){
-            case 1:{
+            case 1: 
                 cout << "Option 1" << endl;
-                float newRate;
-                cout << "Set new rate: " ;
-                cin >> newRate;
-                _allMovies[0]->setRate(newRate);
-            }
+                rateMovie(clasifyVideos(_catalog, 2));    
             break;
-            case 2: {
+            case 2: 
                 cout << "Option 2" << endl;
-                float newRate;
-                cout << "Set new rate: " ;
-                cin >> newRate;
-                _allMovies[1]->setRate(newRate);
-            }
+                rateSerie(series);
             break;
             case 0: cout << endl;
             break;
@@ -312,6 +322,7 @@ void rateMovie(vector<Video*> _allMovies){
         }
     }
 }
+
     
 
 
@@ -320,8 +331,8 @@ void rateMovie(vector<Video*> _allMovies){
 int main(){
     //system("cls"); //Clear console
     welcome();
-    vector<Video*> catalog;
     int op = 1;
+    bool dataLoaded = false;
     while(op != 0){
         cout << endl;
         cout << "******* MAIN MENU *******" << endl;
@@ -338,14 +349,11 @@ int main(){
 
         //Evaluate if there is data in the catalog vector only if the selected option is not Load Data
         try{
-            if(op != 1 && op != 0){
-                int cont = 0;
-                for(Video* vid: catalog){
-                    cont++;
-                }
-                if(cont == 0){
-                    throw "WARNING: There is no data loaded";
-                }
+            if(op != 1 && op != 0 && !dataLoaded){
+               throw "WARNING: There is no data loaded";
+            }
+            else if(op == 1 && dataLoaded){
+                throw "Data already loaded";
             }
         }
         catch(const char* exception){
@@ -355,31 +363,37 @@ int main(){
         //Menu options
         switch (op){
             case 1: //Load data
-                try{          
-                    vector <Episode> demonEpisodes;
-                    Episode ds1{"ds1", 1, 1, 23.0, 4.5};
-                    demonEpisodes.push_back(ds1);
-                    Serie DemonSlayer("12345", "Kimetsu no Yaiba", "Action", 4.5, demonEpisodes); 
+                try{
+                    if(!dataLoaded){
+                        vector <Episode> demonEpisodes;
+                        Episode ds1{"ds1", 1, 1, 23.0, 4.5};
+                        demonEpisodes.push_back(ds1);
+                        Serie DemonSlayer("12345", "Kimetsu no Yaiba", "Action", 4.5, demonEpisodes); 
 
 
-                    vector <Episode> trollEpisodes;
-                    Episode th1{"th1", 2, 1, 22.4, 4.4};
-                    trollEpisodes.push_back(th1);
-                    Serie TrollHunters("23445", "Troll Hunters", "Fantasy", 5, trollEpisodes);
+                        vector <Episode> trollEpisodes;
+                        Episode th1{"th1", 2, 1, 22.4, 4.4};
+                        trollEpisodes.push_back(th1);
+                        Serie TrollHunters("23445", "Troll Hunters", "Fantasy", 5, trollEpisodes);
 
-                    Movie PacificRim("12321", "Pacific Rim", "Sci-Fi", 2.11, 4.3);
-                    Movie WhiteChicks("23421", "White Chicks", "Comedy", 1.49, 4.6);
+                        Movie PacificRim("12321", "Pacific Rim", "Sci-Fi", 2.11, 4.3);
+                        Movie WhiteChicks("23421", "White Chicks", "Comedy", 1.49, 4.6);
 
-                    catalog.push_back(&DemonSlayer);
-                    catalog.push_back(&TrollHunters);
-                    catalog.push_back(&PacificRim);
-                    catalog.push_back(&WhiteChicks);
+                        catalog.push_back(&DemonSlayer);
+                        catalog.push_back(&TrollHunters);
+                        catalog.push_back(&PacificRim);
+                        catalog.push_back(&WhiteChicks);
 
-                    cout << "Data loaded succesfully" << endl;
+                        series.push_back(&DemonSlayer);
+                        series.push_back(&TrollHunters);
+
+                        cout << "Data loaded succesfully" << endl;
+                    }
                 }
                 catch(const char* exception){
                     cout << exception << endl;
                 }
+                dataLoaded = true;
             break;
             case 2: showVideos(catalog);
             break;
@@ -411,13 +425,13 @@ int main(){
             }
             case 4: //show episodes
                 cout << "You have chosen option 4" << endl; 
-                //showEpisodes(catalog);
+                showEpisodes(series);
             break;
             case 5://show movies 
                 showMovies(catalog);
             break;
             case 6://Rate a video
-                cout << "You have chosen option 6" << endl;//rateVideo();
+                rateVideo(catalog);
             break;
             case 0: //Exit
                 cout << "Come back soon :)" << endl;

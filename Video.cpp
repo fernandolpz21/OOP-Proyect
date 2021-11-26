@@ -1,5 +1,6 @@
 #include "Video.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -47,4 +48,22 @@ void Video::setRate(float _rate){
         this -> rate = _rate;
     }
 
+}
+bool Video::operator == (string _videoType){
+    try{
+        if(_videoType == "serie"){
+            return this -> getId().compare(3, 2, "45") == 0; //[RB]
+        }
+        else if(_videoType == "movie"){
+            return this -> getId().compare(3, 2, "21") == 0;
+        }
+        else{
+            throw "This isn't a movie or a Serie";
+        }
+    }
+    catch(const char* exception){
+        cout << exception << endl;
+        
+    }
+    return false;
 }
