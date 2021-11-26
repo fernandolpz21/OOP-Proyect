@@ -26,10 +26,55 @@ Programación orientada a objetos TC1031
 Instituto Tecnológico de Monterrey 
 Campus Guadalajara
 
+References:
+[R1] http://www.network-science.de/ascii/
+[R2] https://stackoverflow.com/questions/874134/find-out-if-string-ends-with-another-string-in-c
+
+[RA] switch condicional:
+switch(opción) //donde opción es la variable a comparar
+{
+    case valor1: //Bloque de instrucciones 1;
+    break; //Indica el fin del primer bloque de instrucciones
+    case valor2: //Bloque de instrucciones 2;
+    break;
+    case valor3: //Bloque de instrucciones 3;
+    break;
+    //Nótese que valor 1 2 y 3 son los valores que puede tomar la opción
+    //la instrucción break es necesaria, para no ejecutar todos los casos.
+    default: //Bloque de instrucciones por defecto;
+    //default, es el bloque que se ejecuta en caso de que no se de ningún caso
+}
+https://www.programarya.com/Cursos/C++/Condicionales/Condicional-switch
+
+[RB] Compare function
+Sintax 1:
+int string::compare (const string& str) const
+Returns:
+0 : if both strings are equal.
+A value < 0 : if *this is shorter than str or,
+first character that doesn't match is smaller than str.
+A value > 0 : if *this is longer than str or,
+first character that doesn't match is greater
+
+Sintax 2:
+
+int string::compare (size_type idx, size_type len, const string& str) const
+Throws out_of_range if index > size().
+where:
+idx is an index character number where the program should start reading
+len is the number of characters thath the program should read to compare
+str is the string that has to be compared whith len
+
+For example:
+s2.compare(3, 5, s1))
+
+we want the program to avoid the first 3 characters of the string s2, read the next 5 characters and compare them with the string s1. If there are equal, it should return 0
+
+https://www.geeksforgeeks.org/stdstringcompare-in-c/
+
 
 
 
 
 Dudas:
-1) Override de set length en serie.cpp y .h --- no sé cómo hacer un override sin usar sobrecarga de funciones
-2) main.cpp 81 -- Porqué si funciona con el NOT??
+

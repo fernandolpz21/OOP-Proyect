@@ -5,7 +5,8 @@ using namespace std;
 Episode::Episode(){
 
 }
-Episode::Episode(std::string _title, int _season, float _length, float _rate): title{_title}, season{_season}, length{_length}, rate{_rate}{
+Episode::Episode(std::string _title, int _season, int _epNumber, float _length, float _rate): 
+    title{_title}, season{_season}, length{_length}, rate{_rate}, epNumber{_epNumber}{
 
 }
 //Getters & Setters
@@ -20,6 +21,9 @@ float Episode::getLength(){
 }
 float Episode::getRate(){
     return this -> rate;
+}
+int Episode::getEpNumber(){
+    return this -> epNumber;
 }
 void Episode::setTitle(string _title){
     this -> title = _title;

@@ -27,4 +27,5 @@ class Serie: public Video{
         //Methods
         void updateLength();
         void updateRate();
+        void showEpisodes();
 };
