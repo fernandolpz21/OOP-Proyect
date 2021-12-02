@@ -25,6 +25,7 @@ using namespace std;
 //*** Global variables *** 
     vector<Video*> catalog;
     vector<Serie*> series;
+    vector<Episode*> episodeCatalog;
 
 // *** Functions ***
 void welcome(){
@@ -191,7 +192,7 @@ vector<Video*> clasifyVideos(vector<Video*> _catalog, int _videoType){
     }
     return _catalog;
 }
-int showEpisodes(vector<Serie*> _series){
+int selectSerie(vector<Serie*> _series){
     int op = 1;
     while (op != 0){
         cout << endl;
@@ -208,7 +209,6 @@ int showEpisodes(vector<Serie*> _series){
         
         try{
             if(op > 0 && op <= cont){
-                _series[op-1]->showEpisodes();
                 return op-1; //For the rateSeries() function
             }
             else if(op == 0){
@@ -261,14 +261,39 @@ void rateMovie(vector<Video*> _allMovies){
         }
     }
 }
-void rateSerie(vector<Serie*> _series){
-    showEpisodes(_series);
-    int serieNumber = showEpisodes(_series);
-    
+void rateSerie(int serieNumber){
+    try{
+        float newRate;
+        cout << "Set new rate: " ;
+        cin >> newRate;
+        if(newRate < 1 || newRate > 5){
+            throw "ERROR: Non valid rate";
+        }
+        else{
+            episodeCatalog[serieNumber]->setRate(newRate);
+            catalog[serieNumber]-> setRate(episodeCatalog[serieNumber]->getRate()); //Putting the info inside the catalog
+            cout << "Rate changed successfully " << endl;
+        }
+    }
+    catch(const char* exception){
+        cout << exception << endl;
+    }
+
+    /*
+    Again this could be the ideal code, but because of the program crashing problem I can't run this section, so against my will I will use
+    the code above
+
+
+    int serieNumber = selectSerie(_series);
     int op = 1;
     while (op != 0){
         cout << endl;
         cout << "** SELECT AN EPISODE **" << endl;
+        int cont = 1;
+        for(Episode ep: _series[serieNumber]->episodes){ 
+            cout << cont << ") " << ep.getTitle() << endl;
+            cont++;
+        }
         cout << "0) Go back" << endl;
         cout << "Choose an option : " ;
         cin >> op;
@@ -293,6 +318,7 @@ void rateSerie(vector<Serie*> _series){
             cout << exception << endl;
         }
     }
+    */
 }
 void rateVideo(vector<Video*> _catalog){
     int op = 1;
@@ -312,7 +338,7 @@ void rateVideo(vector<Video*> _catalog){
             break;
             case 2: 
                 cout << "Option 2" << endl;
-                rateSerie(series);
+                rateSerie(selectSerie(series));
             break;
             case 0: cout << endl;
             break;
@@ -322,14 +348,39 @@ void rateVideo(vector<Video*> _catalog){
         }
     }
 }
+void showEpisodes(int serieNumber){
+    Episode selectedEpisode = *episodeCatalog[serieNumber];
+    cout << endl;
+    cout << "Title: " << selectedEpisode.getTitle() << endl;
+    cout << "Episode number: " << selectedEpisode.getEpNumber() << endl;
+    cout << "Season: " << selectedEpisode.getSeason() << endl;
+    cout << "Length: " << selectedEpisode.getLength() << endl;
+    cout << "Rate: " << selectedEpisode.getRate() << endl;
+    cout << "==========================================" << endl;
+    /*
+    This section is the correct one, but the problem is that the program also crashes
+    so I'm going to leave the section above me even tho i don't like it because it only works 
+    for 1 episode series, but the program doesn't crash.
 
+
+    for(Episode ep: _series[serieNumber]->episodes){ 
+        std::cout << std::endl;
+        std::cout << "Title: " << ep.getTitle() << std::endl;
+        std::cout << "Episode number: " << ep.getEpNumber() << std::endl;
+        std::cout << "Season: " << ep.getSeason() << std::endl;
+        std::cout << "Length: " << ep.getLength() << std::endl;
+        std::cout << "Rate: " << ep.getRate() << std::endl;
+        std::cout << "==========================================" << std::endl;
+    }
+    */
+}
     
 
 
 //****** MAIN PROGRAM **********
 
 int main(){
-    //system("cls"); //Clear console
+    system("cls"); //Clear console
     welcome();
     int op = 1;
     bool dataLoaded = false;
@@ -368,7 +419,7 @@ int main(){
                         vector <Episode> demonEpisodes;
                         Episode ds1{"ds1", 1, 1, 23.0, 4.5};
                         demonEpisodes.push_back(ds1);
-                        Serie DemonSlayer("12345", "Kimetsu no Yaiba", "Action", 4.5, demonEpisodes); 
+                        Serie DemonSlayer("12345", "Demon Slayer", "Action", 4.5, demonEpisodes); 
 
 
                         vector <Episode> trollEpisodes;
@@ -386,6 +437,9 @@ int main(){
 
                         series.push_back(&DemonSlayer);
                         series.push_back(&TrollHunters);
+
+                        episodeCatalog.push_back(&ds1);
+                        episodeCatalog.push_back(&th1);
 
                         cout << "Data loaded succesfully" << endl;
                     }
@@ -424,8 +478,7 @@ int main(){
                 break;
             }
             case 4: //show episodes
-                cout << "You have chosen option 4" << endl; 
-                showEpisodes(series);
+                showEpisodes(selectSerie(series));
             break;
             case 5://show movies 
                 showMovies(catalog);
@@ -441,5 +494,5 @@ int main(){
                 cout << "The chosen option is not correct. Please try again" << endl;
                 cout << endl;
         }//[RA]
-    } 
+    }
 }

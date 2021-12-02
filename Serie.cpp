@@ -46,6 +46,8 @@ void Serie::updateRate(){
     }
     setRate(totalRate);
 }
+
+//I had to put this function in main.cpp because the program crashes every time I call Serie.showEpisodes()
 void Serie::showEpisodes(){
     for(Episode ep : this-> episodes){ 
         std::cout << std::endl;

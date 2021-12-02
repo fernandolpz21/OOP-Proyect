@@ -20,7 +20,6 @@ class Serie: public Video{
         //Override setters
         void setLength(float _length) override;
         void setRate(float _rate) override;
-        void setLength();
 
         std::vector <Episode> episodes;//vector <type> name
 

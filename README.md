@@ -8,7 +8,7 @@ Se quiere trabajar con dos tipos de videos: películas y series. Todo video tien
 
 Las series tienen episodios y cada episodio tiene un título y temporada a la que pertenece.
 
-Nos interesa conocer la calificación promedio que ha recibido cada uno de los videos. Esta califiación está en escala de 1 a 5 donde 5 es la mejor calificación.
+Nos interesa conocer la calificación promedio que ha recibido cada uno de los videos. Esta calificación está en escala de 1 a 5 donde 5 es la mejor calificación.
 
 El sistema debe ser capaz de :
 
@@ -27,7 +27,7 @@ Instituto Tecnológico de Monterrey
 Campus Guadalajara
 
 References:
-[R1] http://www.network-science.de/ascii/
+[R1] ASCII generator: http://www.network-science.de/ascii/
 
 [RA] switch condicional:
 switch(opción) //donde opción es la variable a comparar
@@ -71,11 +71,4 @@ we want the program to avoid the first 3 characters of the string s2, read the n
 
 https://www.geeksforgeeks.org/stdstringcompare-in-c/
 
-
-
-
-
-Dudas:
-1) El programa crashea al acceder a las series
-2) El nombre de kimetsu no siempre aparece
 
